@@ -1,0 +1,682 @@
+app:
+  description: Dify Docs Translation, English to Korean
+  icon: 📚
+  icon_background: '#FFEAD5'
+  mode: workflow
+  name: docs-translation-en-to-ko
+  use_icon_as_answer_icon: false
+kind: app
+version: 0.1.4
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: false
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        sourceType: start
+        targetType: code
+      id: 1711067409646-source-1717916867969-target
+      source: '1711067409646'
+      sourceHandle: source
+      target: '1717916867969'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: iteration
+      id: 1717916867969-source-1717916955547-target
+      source: '1717916867969'
+      sourceHandle: source
+      target: '1717916955547'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: true
+        iteration_id: '1717916955547'
+        sourceType: llm
+        targetType: llm
+      id: 1717916961837-source-1717916977413-target
+      source: '1717916961837'
+      sourceHandle: source
+      target: '1717916977413'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: true
+        iteration_id: '1717916955547'
+        sourceType: llm
+        targetType: llm
+      id: 1717916977413-source-1717916984996-target
+      source: '1717916977413'
+      sourceHandle: source
+      target: '1717916984996'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: true
+        iteration_id: '1717916955547'
+        sourceType: llm
+        targetType: llm
+      id: 1717916984996-source-1717916991709-target
+      source: '1717916984996'
+      sourceHandle: source
+      target: '1717916991709'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: false
+        sourceType: iteration
+        targetType: template-transform
+      id: 1717916955547-source-1717917057450-target
+      source: '1717916955547'
+      sourceHandle: source
+      target: '1717917057450'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: template-transform
+        targetType: end
+      id: 1717917057450-source-1711068257370-target
+      source: '1717917057450'
+      sourceHandle: source
+      target: '1711068257370'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: true
+        iteration_id: '1717916955547'
+        sourceType: iteration-start
+        targetType: llm
+      id: 1717916955547start0-source-1717916961837-target
+      source: 1717916955547start0
+      sourceHandle: source
+      target: '1717916961837'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: Start
+        type: start
+        variables:
+        - label: Input Text
+          max_length: null
+          options: []
+          required: true
+          type: paragraph
+          variable: input_text
+        - label: target_language
+          max_length: 48
+          options: []
+          required: true
+          type: text-input
+          variable: target_language
+      dragging: false
+      height: 116
+      id: '1711067409646'
+      position:
+        x: 30
+        y: 301.5
+      positionAbsolute:
+        x: 30
+        y: 301.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        outputs:
+        - value_selector:
+          - '1717917057450'
+          - output
+          variable: final
+        selected: false
+        title: End
+        type: end
+      height: 90
+      id: '1711068257370'
+      position:
+        x: 2291
+        y: 301.5
+      positionAbsolute:
+        x: 2291
+        y: 301.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "\ndef main(input_text: str) -> str:\n    token_limit = 1000\n    overlap\
+          \ = 100\n    chunk_size = int(token_limit * 6 * (4/3))\n\n        # Initialize\
+          \ variables\n    chunks = []\n    start_index = 0\n    text_length = len(input_text)\n\
+          \n    # Loop until the end of the text is reached\n    while start_index\
+          \ < text_length:\n        # If we are not at the beginning, adjust the start_index\
+          \ to ensure overlap\n        if start_index > 0:\n            start_index\
+          \ -= overlap\n\n        # Calculate end index for the current chunk\n  \
+          \      end_index = start_index + chunk_size\n        if end_index > text_length:\n\
+          \            end_index = text_length\n\n        # Add the current chunk\
+          \ to the list\n        chunks.append(input_text[start_index:end_index])\n\
+          \n        # Update the start_index for the next chunk\n        start_index\
+          \ += chunk_size\n\n    return {\n        \"chunks\": chunks,\n    }\n"
+        code_language: python3
+        dependencies: []
+        desc: 'token_limit = 1000
+
+          overlap = 100'
+        outputs:
+          chunks:
+            children: null
+            type: array[string]
+        selected: false
+        title: Code
+        type: code
+        variables:
+        - value_selector:
+          - '1711067409646'
+          - input_text
+          variable: input_text
+      height: 98
+      id: '1717916867969'
+      position:
+        x: 336
+        y: 301.5
+      positionAbsolute:
+        x: 336
+        y: 301.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: 'Take good care on maximum number of iterations.  '
+        error_handle_mode: terminated
+        height: 203
+        is_parallel: false
+        iterator_selector:
+        - '1717916867969'
+        - chunks
+        output_selector:
+        - '1717916991709'
+        - text
+        output_type: array[string]
+        parallel_nums: 10
+        selected: false
+        startNodeType: llm
+        start_node_id: 1717916955547start0
+        title: Iteration
+        type: iteration
+        width: 1289
+      height: 203
+      id: '1717916955547'
+      position:
+        x: 638
+        y: 301.5
+      positionAbsolute:
+        x: 638
+        y: 301.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 1289
+      zIndex: 1
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        isInIteration: true
+        isIterationStart: true
+        iteration_id: '1717916955547'
+        model:
+          completion_params:
+            frequency_penalty: 0.5
+            presence_penalty: 0.5
+            temperature: 0.2
+            top_p: 0.75
+          mode: chat
+          name: gpt-4o-mini
+          provider: openai
+        prompt_template:
+        - id: 7261280b-cb27-4f84-8363-b93e09246d16
+          role: system
+          text: "<Task> Identify the technical terms in the users input. Use the following\
+            \ format {XXX} -> {XXX} to show the corresponding technical terms before\
+            \ and after translation. \n\n<Input Text> \n{{#1717916955547.item#}}\n\
+            \n<Example>\n| 영어 | 한국어 |\n| --- | --- |\n| Prompt Engineering | 프롬프트\
+            \ 엔지니어링 |\n| Text Generation  | 텍스트 생성 |\n| Token  | 토큰 |\n| Prompt  |\
+            \ 프롬프트 |\n| Meta Prompting  | 메타 프롬프트 |\n| diffusion models  | 디퓨전 모델\
+            \ |\n| Agent  | 에이전트 |\n| Transformer  | 트랜스포머 |\n| Zero Shot  | 제로 샷\
+            \ |\n| Few Shot  | 퓨 샷 |\n| chat window  | 챗 윈도우 |\n| context | 컨텍스트 |\n\
+            | stock photo  | 스톡 사진 |\n\n\n<Technical Terms> "
+        selected: true
+        title: 'Identify Terms '
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+          enabled: false
+      extent: parent
+      height: 98
+      id: '1717916961837'
+      parentId: '1717916955547'
+      position:
+        x: 117
+        y: 85
+      positionAbsolute:
+        x: 755
+        y: 386.5
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1001
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        isInIteration: true
+        iteration_id: '1717916955547'
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gpt-4o-mini
+          provider: openai
+        prompt_template:
+        - id: 05e03f0d-c1a9-43ab-b4c0-44b55049434d
+          role: system
+          text: "<Task> You are a professional translator proficient in Korean especially\
+            \ skilled in translating professional academic papers into easy-to-understand\
+            \ popular science articles. Please help me translate the following english\
+            \ paragraph into Korean, in a style similar to Korean popular science\
+            \ articles .\n<Constraints> \nTranslate directly based on the English\
+            \ content, maintain the original format and do not omit any information.\
+            \ \n<Before Translation> \n{{#1717916955547.item#}}\n<Terms>\n{{#1717916961837.text#}}\n\
+            <Target Language>\n{{#1711067409646.target_language#}}\n<Direct Translation> "
+        selected: false
+        title: 1st Translation
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+          enabled: false
+      extent: parent
+      height: 98
+      id: '1717916977413'
+      parentId: '1717916955547'
+      position:
+        x: 421
+        y: 85
+      positionAbsolute:
+        x: 1059
+        y: 386.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        isInIteration: true
+        iteration_id: '1717916955547'
+        model:
+          completion_params:
+            frequency_penalty: 0.5
+            presence_penalty: 0.5
+            temperature: 0.2
+            top_p: 0.75
+          mode: chat
+          name: o1-mini
+          provider: openai
+        prompt_template:
+        - id: 9e6cc050-465e-4632-abc9-411acb255a95
+          role: system
+          text: "<Task>\nBased on the results of the direct translation, point out\
+            \ specific issues it have. Accurate descriptions are required, avoiding\
+            \ vague statements, and there's no need to add content or formats that\
+            \ were not present in the original text, including but not liimited to:\
+            \ \n- inconsistent with Korean expression habits, clearly indicate where\
+            \ it does not conform\n- Clumsy sentences, specify the location, no need\
+            \ to offer suggestions for modification, which will be fixed during free\
+            \ translation\n- Obscure and difficult to understand, attempts to explain\
+            \ may be made\n- No Omission: All keywords, sentences, and paragraphs\
+            \ in the original text must be faithfully reflected in the translation.\n\
+            - No Misinterpretation: Misreading or misunderstanding the original meaning\
+            \ will be considered errors.\n- No Unauthorized Additions or Deletions:\
+            \ The translation must respect the author’s intent without unnecessary\
+            \ additions or deletions. Translator’s notes may be added for clarification\
+            \ when necessary.\n- Fluency and Readability: The translation should be\
+            \ smooth and align with English linguistic conventions.\n- Proper Translation\
+            \ of Names: Names in technical books are generally left in their original\
+            \ form, except for widely recognized names (e.g., Steve Jobs) that should\
+            \ be translated into English.\n- Book Titles: If an official English version\
+            \ of the book title exists, use it. If not, retain the original Korean\
+            \ title in pinyin or English transliteration.\n- Translation of Charts\
+            \ and Tables: Titles, table headers, and annotations in tables must be\
+            \ translated. Captions for explanatory illustrations should be presented\
+            \ in a bilingual format, while UI screenshots do not require translation.\n\
+            - English Terminology: When an English term first appears, prioritize\
+            \ its abbreviation if commonly used, and provide a full explanation in\
+            \ parentheses, including the original English term and its Korean equivalent.\
+            \ For example: HTML (Hypertext Markup Language). Subsequent usage may\
+            \ rely on the abbreviation.\n- Code Listings and Snippets: Translators\
+            \ are not required to reproduce program code but should reference its\
+            \ location in the original text (e.g., \"Code 1 on Page 99\"). If errors\
+            \ in the code are identified, they should be noted in translator comments.\
+            \ Comments within the code should be translated, provided in bilingual\
+            \ format with one English line followed by its Korean equivalent if the\
+            \ code itself is not included in the translation.\n- Punctuation: Punctuation\
+            \ in the translation must adhere to English norms and not directly copy\
+            \ those of the original text.\n\n<Direct Translation>\n{{#1717916977413.text#}}\n\
+            <Original Text>\n{{#1717916955547.item#}}\n<Terms>\n{{#1717916961837.text#}}\n\
+            <Problems with the Direct Translation>"
+        selected: false
+        title: 'Problems '
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+          enabled: false
+      extent: parent
+      height: 98
+      id: '1717916984996'
+      parentId: '1717916955547'
+      position:
+        x: 725
+        y: 85
+      positionAbsolute:
+        x: 1363
+        y: 386.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        isInIteration: true
+        iteration_id: '1717916955547'
+        model:
+          completion_params:
+            frequency_penalty: 0.5
+            presence_penalty: 0.5
+            temperature: 0.2
+            top_p: 0.75
+          mode: chat
+          name: o1-mini
+          provider: openai
+        prompt_template:
+        - id: 4d7ae758-2d7b-4404-ad9f-d6748ee64439
+          role: system
+          text: "<Task>\nBased on the results of the direct translation in the first\
+            \ step and the problems identified in the second step, re-translate to\
+            \ achieve a meaning-based interpretation. Ensure the original intent of\
+            \ the content is preserved while making it easier to understand and more\
+            \ in line with Korean expression habits. All the while maintaining the\
+            \ original format unchanged. \n\n<Guidance>\n- inconsistent with Korean\
+            \ expression habits, clearly indicate where it does not conform\n- Clumsy\
+            \ sentences, specify the location, no need to offer suggestions for modification,\
+            \ which will be fixed during free translation\n- Obscure and difficult\
+            \ to understand, attempts to explain may be made\n- No omissions: Keywords,\
+            \ sentences, and paragraphs in the original text must all be reflected\
+            \ in the translation.\n- No mistranslations: Misreading or misinterpreting\
+            \ the original meaning counts as a mistranslation.\n- No arbitrary additions\
+            \ or deletions: Translation is not creative writing, and the translator\
+            \ must respect the author’s perspective. Translator's notes can be added\
+            \ appropriately for clarification.\n- Fluent and natural translation:\
+            \ The translation should conform to English linguistic and stylistic norms.\n\
+            - Translating names: In technical books, names are generally left untranslated,\
+            \ but well-known names (e.g., Steve Jobs) should be presented in their\
+            \ commonly accepted English form.\n- Translating book titles: For books\
+            \ with an official English version, use the English title. If no English\
+            \ version exists, retain the original title.\n- Translating charts and\
+            \ figures: Translate table headings, captions, and annotations. Figure\
+            \ captions should also be translated. For interface screenshots, the text\
+            \ in the images does not need translation. For explanatory figures, use\
+            \ a bilingual format with both English and Korean labels.\n- Handling\
+            \ technical terms: When a technical term first appears, use its abbreviation\
+            \ (if commonly used) and provide its full form in parentheses with both\
+            \ the English and Korean explanations, e.g., \"HTML (Hypertext Markup\
+            \ Language).\" In subsequent references, the abbreviation alone suffices.\
+            \ The full form can be used when required by context.\n- Code listings\
+            \ and snippets: Program code in the original text does not need to be\
+            \ retyped. Instead, cite it in the format \"Code 1 on Page 99 of the original\
+            \ book\" (referring to the first code block on page 99 of the source text).\
+            \ Translators should verify the correctness of code when possible and\
+            \ note any errors with translator annotations. Comments in the code must\
+            \ be translated; if code is not included in the manuscript, comments should\
+            \ be presented with one line of English followed by its Korean translation.\n\
+            - Punctuation: Follow the norms and usage of English punctuation, rather\
+            \ than copying the original text's punctuation style.\n\n<Direct Translation>\
+            \ \n{{#1717916977413.text#}}\n<problems in the first translation>\n{{#1717916984996.text#}}\n\
+            <Original Text>\n{{#1711067409646.input_text#}}\n<Target Language>\n{{#1711067409646.target_language#}}\n\
+            <Terms>\n{{#1717916961837.text#}}\n<Free Translation> "
+        selected: false
+        title: '2nd Translation '
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+          enabled: false
+      extent: parent
+      height: 98
+      id: '1717916991709'
+      parentId: '1717916955547'
+      position:
+        x: 1029
+        y: 85
+      positionAbsolute:
+        x: 1667
+        y: 386.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
+    - data:
+        desc: 'Combine all chunks of translation. '
+        selected: false
+        template: '{{ translated_text | join('' '') }}'
+        title: Template
+        type: template-transform
+        variables:
+        - value_selector:
+          - '1717916955547'
+          - output
+          variable: translated_text
+      height: 82
+      id: '1717917057450'
+      position:
+        x: 1987
+        y: 301.5
+      positionAbsolute:
+        x: 1987
+        y: 301.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        author: Dify
+        desc: ''
+        height: 186
+        selected: false
+        showAuthor: true
+        text: '{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"코드
+          노드는 ","type":"text","version":1},{"detail":0,"format":16,"mode":"normal","style":"","text":"input_text","type":"text","version":1},{"detail":0,"format":0,"mode":"normal","style":"","text":"를
+          ","type":"text","version":1},{"detail":0,"format":16,"mode":"normal","style":"","text":"token_limit","type":"text","version":1},{"detail":0,"format":0,"mode":"normal","style":"","text":"
+          길이로 나누어 청크(chunk)로 분할합니다.","type":"text","version":1},{"type":"linebreak","version":1},{"detail":0,"format":0,"mode":"normal","style":"","text":"각
+          청크는 텍스트의 일관성을 유지하기 위해 서로 겹치도록 설계되어 있습니다.","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1,"textFormat":0},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"이
+          코드 노드의 출력 결과는 ","type":"text","version":1},{"detail":0,"format":16,"mode":"normal","style":"","text":"input_texts","type":"text","version":1},{"detail":0,"format":0,"mode":"normal","style":"","text":"를
+          분할한 청크들의 배열입니다.","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1,"textFormat":0}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}'
+        theme: blue
+        title: ''
+        type: ''
+        width: 340
+      height: 186
+      id: '1718990593686'
+      position:
+        x: 259.3026056936437
+        y: 451.6924912936374
+      positionAbsolute:
+        x: 259.3026056936437
+        y: 451.6924912936374
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom-note
+      width: 340
+    - data:
+        author: Dify
+        desc: ''
+        height: 128
+        selected: false
+        showAuthor: true
+        text: '{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"코드
+          노드의 출력에 있는 모든 요소를 ​​반복하고 3단계 번역 워크플로를 사용하여 각 청크를 번역합니다.","type":"text","version":1}],"direction":"ltr","format":"start","indent":0,"type":"paragraph","version":1,"textFormat":0},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1,"textFormat":0}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}'
+        theme: blue
+        title: ''
+        type: ''
+        width: 355
+      height: 128
+      id: '1718991836605'
+      position:
+        x: 764.3891977435923
+        y: 530.8917807505335
+      positionAbsolute:
+        x: 764.3891977435923
+        y: 530.8917807505335
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom-note
+      width: 355
+    - data:
+        author: Dify
+        desc: ''
+        height: 126
+        selected: false
+        showAuthor: true
+        text: '{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"높은
+          ","type":"text","version":1},{"detail":0,"format":16,"mode":"normal","style":"","text":"token_limit","type":"text","version":1},{"detail":0,"format":0,"mode":"normal","style":"","text":"
+          값은 피하십시오. GPT-4o는 긴 컨텍스트 길이에서 성능이 저하될 수 있습니다.","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1,"textFormat":0},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"1000
+          토큰 이하를 사용하는 것을 권장합니다.","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1,"textFormat":0}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}'
+        theme: yellow
+        title: ''
+        type: ''
+        width: 351
+      height: 126
+      id: '1718991882984'
+      position:
+        x: 304.49115824454367
+        y: 148.4042994607805
+      positionAbsolute:
+        x: 304.49115824454367
+        y: 148.4042994607805
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom-note
+      width: 351
+    - data:
+        desc: ''
+        isInIteration: true
+        selected: false
+        title: ''
+        type: iteration-start
+      draggable: false
+      height: 48
+      id: 1717916955547start0
+      parentId: '1717916955547'
+      position:
+        x: 24
+        y: 68
+      positionAbsolute:
+        x: 662
+        y: 369.5
+      selectable: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom-iteration-start
+      width: 44
+      zIndex: 1002
+    viewport:
+      x: -369.2455306054451
+      y: 10.006919894501948
+      zoom: 0.8705505632961262
